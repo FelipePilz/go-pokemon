@@ -10,6 +10,6 @@ services:
       MYSQL_ALLOW_EMPTY_PASSWORD : true
       MYSQL_DATABASE: "pokemons"
     volumes:
-      - "../data/create-tables.sql:/docker-entrypoint-initdb.d/create-tables.sql"
+      - "./init.sql:/docker-entrypoint-initdb.d/init.sql"
     ports:
       - "3306:3306"
