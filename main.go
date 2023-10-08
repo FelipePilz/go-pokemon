@@ -17,6 +17,8 @@ func main() {
 	router.GET("/pokemons", getPokemons)
 	router.GET("/pokemons/type/:name", getPokemonsByType)
 
+	router.GET("/types", getTypes)
+
 	router.Run("localhost:8080")
 }
 
@@ -25,6 +27,12 @@ func getPokemons(c *gin.Context) {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	if pokemons == nil {
+		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "No pokemons found"})
+		return
+	}
+
 	c.IndentedJSON(http.StatusOK, pokemons)
 }
 
@@ -42,4 +50,18 @@ func getPokemonsByType(c *gin.Context) {
 	}
 
 	c.IndentedJSON(http.StatusOK, pokemons)
+}
+
+func getTypes(c *gin.Context) {
+	types, err := server.FindTypes()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if types == nil {
+		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "No types found"})
+		return
+	}
+
+	c.IndentedJSON(http.StatusOK, types)
 }
